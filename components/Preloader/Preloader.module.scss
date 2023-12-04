@@ -1,0 +1,10 @@
+.preloader{
+    z-index: -2;
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100dvw;
+    height: 100dvh;
+    background-color: blue;
+    opacity: .01;
+}
