@@ -31,7 +31,7 @@ export function CanvasOffScreen({
       transfered.current = true
     } catch (e) {
       // Browser doesn't support offscreen canvas at all
-      console.log(e)
+
       setFallback(true)
       return
     }

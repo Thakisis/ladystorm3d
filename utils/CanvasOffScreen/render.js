@@ -5,7 +5,7 @@ import { createPointerEvents } from "./events"
 
 export function render(children) {
   extend(THREE)
-  
+
   let root
   let dpr = [1, 2]
   let size = { width: 0, height: 0, top: 0, left: 0, updateStyle: false }
@@ -112,7 +112,7 @@ export function render(children) {
 
   self.onmessage = event => {
     const { type, payload } = event.data
-    console.log(event.data)
+
     const handler = handlerMap[type]
     if (handler) handler(payload)
   }
@@ -153,7 +153,7 @@ export function render(children) {
       .catch(onError)
     return {}
   }
-
+  self.THREE = THREE
   // Shims for web offscreen canvas
   // @ts-ignore
   self.window = {}
@@ -166,5 +166,8 @@ export function render(children) {
     set onload(callback) {
       callback(true)
     }
+
   }
 }
+
+THREE 
