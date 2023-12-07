@@ -15,8 +15,6 @@ export function Layout({ children }) {
             <Canvas></Canvas>
             <Preloader></Preloader>
             {children}
-
-
         </div>
     )
 }

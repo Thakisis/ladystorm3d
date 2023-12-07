@@ -7,7 +7,7 @@ export default function SceneFallBack(props) {
     const init = useStore((state) => state.initOnScreen)
     useEffect(() => {
 
-        init(data, false)
+        init(data)
     }, [data, init])
     return (
         <>

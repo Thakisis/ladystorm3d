@@ -41,9 +41,7 @@ export function CanvasOffScreen({
         // Worker failed to initialize
         setFallback(true)
       }
-      if (e.data.type === "custom") {
-        //console.log(e)
-      }
+
     }
 
 

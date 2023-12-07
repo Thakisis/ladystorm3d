@@ -5,11 +5,7 @@ export const ThreeStore = (set, get) => ({
     loaderState: { loading: false, percent: 0, loadedSize: 0, totalSize: 0, loadingFiles: 0, loadedFiles: 0, files: [] },
     three: {},
     models: {},
-    run(name, payload, cloned = true) {
-        const payloadCloned = cloned ? structuredClone(payload) : payload
-        self.postMessage({ type: "zustand", name, payloadCloned })
-    }
-    ,
+
     Actions: {
         initCanvas(threeParams) {
             const loaders = createLoaders(threeParams.gl)
@@ -26,12 +22,12 @@ export const ThreeStore = (set, get) => ({
         ,
         onProgressLoad(e) {
 
-            get().runAction({ name: 'onProgress', payload: e })
+            get().run({ name: 'onProgress', payload: e })
         }
         ,
         onCompleteLoad(e) {
 
-            get().runAction({ name: 'onComplete', payload: e.name })
+            get().run({ name: 'onComplete', payload: e.name })
 
         },
 

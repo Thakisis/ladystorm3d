@@ -112,7 +112,10 @@ export function render(children) {
 
   self.onmessage = event => {
     const { type, payload } = event.data
-
+    if (event.data.type === "zustand") {
+      //console.log(event.data)
+      //self.postMessage({ type: "zustand", name: "workerRunning", payload: "received" })
+    }
     const handler = handlerMap[type]
     if (handler) handler(payload)
   }
@@ -153,7 +156,7 @@ export function render(children) {
       .catch(onError)
     return {}
   }
-  self.THREE = THREE
+
   // Shims for web offscreen canvas
   // @ts-ignore
   self.window = {}
@@ -166,8 +169,5 @@ export function render(children) {
     set onload(callback) {
       callback(true)
     }
-
   }
 }
-
-THREE 
