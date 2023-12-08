@@ -27,24 +27,20 @@ export function CanvasOffScreen({
     let offscreen
     try {
       // @ts-ignore
+      //setFallback(true)
       offscreen = canvasRef.current.transferControlToOffscreen()
       transfered.current = true
     } catch (e) {
       // Browser doesn't support offscreen canvas at all
-
       setFallback(true)
       return
     }
-
     worker.onmessage = e => {
       if (e.data.type === "error") {
         // Worker failed to initialize
         setFallback(true)
       }
-
     }
-
-
     worker.postMessage(
       {
         type: "init",

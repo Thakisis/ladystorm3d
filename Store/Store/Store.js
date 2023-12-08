@@ -31,39 +31,8 @@ export const useStore = create(immer((set, get) => ({
             console.log("completed")
 
         }
-
-
     }
 })))
-
-
-function configureStore(set, get, inWorker = true) {
-    const worker = CreateWorker()
-
-    if (worker && inWorker) {
-        function runCall({ message }) {
-            if (message.data.type !== 'zustand')
-                return
-            const { name, payload } = message.data
-            get().Actions[name](payload)
-        }
-        worker.addEventListener('message', runCall)
-        function runThreeWorker({ name, payload }) {
-            worker.postMessage({ type: "zustand", name: name, payload })
-        }
-        set({ run: runCall, isWorker: true, worker: worker, runThree: runThreeWorker })
-
-    }
-    const runCallRemove = get().runCall
-
-    function runThreeMain({ name, payload }) {
-
-        get().Actions[name](payload)
-    }
-
-    worker.terminate()
-    set({ run: runThreeMain, worker: false, worker: undefined })
-}
 
 
 

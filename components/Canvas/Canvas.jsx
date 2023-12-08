@@ -5,7 +5,7 @@ import { CanvasOffScreen } from '@/utils/CanvasOffScreen'
 import { useStore } from '@/Store'
 import styles from './Canvas.module.scss'
 
-const SceneFallBack = lazy(() => import('@/components/Scenes/SceneFallBack'))
+const SceneFallBack = lazy(() => import('@/components/RunMain'))
 
 
 export default function Canvas() {

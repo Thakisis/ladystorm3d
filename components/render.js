@@ -1,10 +1,10 @@
 
 import { render } from '@/utils/CanvasOffScreen'
-import { SceneMain } from './Scenes/SceneMain'
+import RunWorker from './RunWorker'
 
 render(
     <>
-        <SceneMain></SceneMain>
+        <RunWorker></RunWorker>
     </>
 )
 

@@ -22,24 +22,12 @@ export const useStore = create(immer((set, get) => ({
             connectWorker(set, get)
             get().run({ name: 'text', payload: "payload" })
         },
-        runActionWorker({ name, payload }) {
-            const worker = get().worker
-            worker.postMessage
-        },
-
-        runActionStore({ name, payload }) {
-            const Actions = get().Actions
-            Actions[name](payload)
-        },
         onProgress(e) {
-            console.log("progress")
+            console.log(e)
         },
         onComplete(e) {
             console.log("complete")
         },
-        workerRunning(payload) {
-            console.log("-", payload)
-        }
 
 
     }

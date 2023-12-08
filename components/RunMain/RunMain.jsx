@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
-import { CameraControls } from "@react-three/drei"
 import { useThree } from "@react-three/fiber"
 import { useStore } from '@/Store'
+import { Scene } from '@/components/Scenes'
 export default function SceneFallBack(props) {
     const data = useThree()
     const init = useStore((state) => state.initOnScreen)
@@ -11,12 +11,7 @@ export default function SceneFallBack(props) {
     }, [data, init])
     return (
         <>
-            <CameraControls />
-            <mesh>
-                <boxGeometry args={[1, 1, 1]} />
-                <meshBasicMaterial color="red" />
-
-            </mesh>
+            <Scene></Scene>
         </>
     )
 }
