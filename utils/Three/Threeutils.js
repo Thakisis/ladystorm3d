@@ -70,7 +70,7 @@ export async function loadModel({ gltfLoader, model, onProgressLoad, onCompleteL
     const { name, path, file, size, type } = model
 
     return new Promise((resolve) => {
-        gltfLoader.loadAsync(`/Models${path}/${file}`,
+        gltfLoader.loadAsync(`/models${path}/${file}`,
             (xhr) => {
                 onProgressLoad({ loaded: xhr.loaded, size: size, name })
                 //onProgress(xhr.loaded, size, name, scene)

@@ -7,8 +7,9 @@ import { ThreeStore } from './ThreeStore'
 
 export const useStore = create(immer((set, get) => ({
     initialized: false,
-
+    loading: { percent: 0 },
     worker: typeof window !== "undefined" && CreateWorker(),
+
     isWorker: true,
     activeRoute: undefined,
     darkTheme: true,
@@ -22,8 +23,8 @@ export const useStore = create(immer((set, get) => ({
             connectWorker(set, get)
             get().run({ name: 'text', payload: "payload" })
         },
-        onProgress(e) {
-            console.log(e)
+        onProgress({ loaded, size }) {
+            set({ loading: { percent: loaded / size * 100 } })
         },
         onComplete(e) {
             console.log("complete")
