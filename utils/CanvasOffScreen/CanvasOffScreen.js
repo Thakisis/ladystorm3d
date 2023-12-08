@@ -21,15 +21,16 @@ export function CanvasOffScreen({
 
   useEffect(() => {
     if (!worker) return
-    if (transfered.current) return
+
     //.log({ ...canvasRef.current })
     const canvas = canvasRef.current
     let offscreen
     try {
       // @ts-ignore
-      //setFallback(true)
+
       offscreen = canvasRef.current.transferControlToOffscreen()
-      transfered.current = true
+
+      throw new Error('Parameter is not a number!')
     } catch (e) {
       // Browser doesn't support offscreen canvas at all
       setFallback(true)

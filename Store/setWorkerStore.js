@@ -1,7 +1,7 @@
-import { ThreeStore } from "./ThreeStore"
 
 // Connect worker establish function for comunication between both treads using post message and event listener
 export function connectWorker(set, get) {
+
     const worker = get().worker
 
     // each time three store (in worker) try to call 
@@ -18,7 +18,6 @@ export function connectWorker(set, get) {
     // Run will be use to call function in Worker Thread  using Post Message
     // like worker-main comunicacion should indicate the name of Action and the Payload
     function run(name, payload, cloned = true) {
-
         const payloadCloned = cloned ? structuredClone(payload) : payload
         worker.postMessage({ type: "zustand", name, payload: payloadCloned })
     }
@@ -28,23 +27,22 @@ export function connectWorker(set, get) {
 
 // OffScreen is not supported or worker failed the initializaciones
 // r3f will fallback to run in main thread
-// Three Store will be added to main Store
+// Three Store comunicate using getters exchange
 // run action now will call directly to action inside sameStore without need of send Messages
-export function DisconnectWorker(set, get) {
+export function disconnectWorker(set, get, getThree) {
+    //    console.log("connect main to three using getter exchange")
     const worker = get().worker
     const listenerWorker = get().listenerWorker
     //run will run directly the action, no need of Clone the object
     function run({ name, payload }) {
-        const Actions = get().Actions
+        const Actions = getThree().Actions
         Actions[name](payload)
     }
     //clear listener and remove worker
     worker.removeEventListener("message", listenerWorker)
     worker.terminate()
     //add three Storage to mainStorage
-    const Actions = get().Actions
-    const { Actions: threeActions, ...otherProps } = ThreeStore(set, get)
-    set({ initialized: true, workerListener: null, isWorker: false, run: run, Actions: { ...threeActions, ...Actions }, ...otherProps })
+    set({ initialized: true, workerListener: null, isWorker: false, run: run })
 }
 
 
@@ -53,9 +51,30 @@ export function DisconnectWorker(set, get) {
 // a listener will be listening for post Message from main thread 
 //and run the Action in store passing the payload
 
-export function connectMain(set, get) {
+export function connectMain(set, get, isWorker, getMain) {
 
-    //listen postmessagran from main thread
+    if (isWorker) {
+        connectWorkerToMain(set, get)
+        return
+    }
+    connectThreeToMain(set, get, getMain)
+    //connectMain(set, get, isWorker, getMain)
+
+}
+
+// r3f will run im main so all comunication will be using the getter exchange of both stores
+function connectThreeToMain(set, get, getMain) {
+    //    console.log('connect three to main using action getter exchange')
+    function run(name, payload) {
+        console.log(name, payload, getMain)
+        const Actions = getMain().Actions
+        Actions[name](payload)
+    }
+    set({ initialized: false, mainListener: null, isWorker: false, run: run })
+}
+
+function connectWorkerToMain(set, get) {
+    console.log('connect three to main using worker message')
     function listenerMain(message) {
         const Actions = get().Actions
         const { type, name, payload } = message.data
@@ -73,10 +92,9 @@ export function connectMain(set, get) {
     }
     //setup listener
     self.addEventListener("message", (message) => listenerMain(message))
-    const Actions = get().Actions
-    const { Actions: threeActions, ...otherProps } = ThreeStore(set, get)
-    set({ initialized: true, mainListener: listenerMain, isWorker: true, run: run, Actions: { ...threeActions, ...Actions }, ...otherProps })
 
+
+    set({ initialized: true, mainListener: listenerMain, isWorker: true, run: run })
 }
 
 

@@ -1,40 +1,57 @@
 import { create } from 'zustand'
 import { mountStoreDevtool } from 'simple-zustand-devtools'
-import { immer } from 'zustand/middleware/immer'
-import { CreateWorker } from '@/utils/worker'
-import { connectWorker } from './setWorkerStore'
-import { ThreeStore } from './ThreeStore'
 
-export const useStore = create(immer((set, get) => ({
+import { connectWorker, disconnectWorker } from './setWorkerStore'
+
+
+export const useStore = create((set, get) => ({
     initialized: false,
-    loading: { percent: 0 },
-    worker: typeof window !== "undefined" && CreateWorker(),
-
+    loading: { percent: 0, complete: false },
+    worker: null,
     isWorker: true,
     activeRoute: undefined,
     darkTheme: true,
     audio: false,
-    initOnScreen(threeParams) {
+    getMain: get,
+    initMain(getThree) {
+        disconnectWorker(set, get, getThree)
 
     },
     Actions: {
+        setWorker(worker) {
+
+            set({ worker: worker })
+            connectWorker(set, get)
+        },
         //create Worker, add Event Listeners, 
         init() {
-            connectWorker(set, get)
-            get().run({ name: 'text', payload: "payload" })
+
+            //get().run({ name: 'text', payload: "payload" })
         },
+        logMain(e) {
+
+        },
+
         onProgress({ loaded, size }) {
+
             set({ loading: { percent: loaded / size * 100 } })
         },
-        onComplete(e) {
-            console.log("complete")
+        async onComplete(e) {
+            await sleep(1000)
+
+            set(({ loading }) => ({ loading: { ...loading, complete: true } }))
+            set(({ model }) => ({ model: e.model.scene }))
         },
 
 
     }
-})))
+}))
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
 
 if (process.env.NODE_ENV === 'development') {
-    mountStoreDevtool('Store three', useStore)
+    mountStoreDevtool('Store', useStore)
 }
+

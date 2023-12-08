@@ -1,7 +1,6 @@
 import { CameraControls } from "@react-three/drei"
+export default function Scene({ worker }) {
 
-
-export function Scene({ worker }) {
     return (
         <>
             <CameraControls></CameraControls>
@@ -13,4 +12,3 @@ export function Scene({ worker }) {
         </>
     )
 }
-

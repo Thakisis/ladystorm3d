@@ -1,10 +1,10 @@
 
 import { render } from '@/utils/CanvasOffScreen'
-import RunWorker from './RunWorker'
+import RunWorker from '@/components/RunWorker'
 
 render(
-    <>
-        <RunWorker></RunWorker>
-    </>
+
+    <RunWorker worker={true} />
+
 )
 

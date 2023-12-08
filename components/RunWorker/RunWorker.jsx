@@ -1,15 +1,15 @@
 import { useEffect } from 'react'
 import { useThree } from "@react-three/fiber"
-import { useStore } from '@/Store/StoreWorker'
-import { Scene } from '@/components/Scenes'
 
-export default function RunMain(props) {
-
+import { useStoreThree } from '@/Store/StoreThree'
+import Scene from '@/components/Scenes'
+export default function RunWorker(props) {
     const data = useThree()
-    const init = useStore((state) => state.initOffScreen)
+
+    const initThree = useStoreThree((state) => (state.initThree))
     useEffect(() => {
-        init(data, true)
-    }, [data, init])
+        initThree({ threeParams: data, isWorker: true })
+    }, [data, initThree])
     return (
         <>
             <Scene worker></Scene>

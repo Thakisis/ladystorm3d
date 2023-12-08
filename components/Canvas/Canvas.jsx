@@ -1,20 +1,24 @@
 "use client"
 
-import { lazy } from 'react'
+import { lazy, useEffect } from 'react'
 import { CanvasOffScreen } from '@/utils/CanvasOffScreen'
 import { useStore } from '@/Store'
 import styles from './Canvas.module.scss'
 
 const SceneFallBack = lazy(() => import('@/components/RunMain'))
-
+const worker = new Worker(new URL('@/components/render.js', import.meta.url), { type: 'module' })
 
 export default function Canvas() {
-    const worker = useStore(state => state.worker)
+
+    const setWorker = useStore(state => state.Actions.setWorker)
+    useEffect(() => {
+        setWorker(worker)
+    })
     return <CanvasOffScreen
         className={styles.canvasThree}
         shadows
 
-        worker={worker} fallback={<SceneFallBack
+        worker={worker} fallback={<SceneFallBack worker={true}
             styles
         />}
         style={{ position: "absolute", top: "0", left: "0", width: "100dvw", height: "100dvh" }}
