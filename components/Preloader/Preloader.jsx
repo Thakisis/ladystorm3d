@@ -4,13 +4,13 @@ import styles from './Preloader.module.scss'
 import { useStore } from "@/Store"
 export function Preloader() {
 
-    const percent = useStore((state) => state.loading.percent)
+    const { percent, complete } = useStore((state) => state.loading)
     //const models = useStore((state) => state.models)
     //  console.log(models)
     return (
         <div className="fixed top-0 left-0 right-0 bottom-0 w-screen h-screen z-50 justify-between  
         flex bg-black"
-            style={{ backgroundImage: 'url(images/BackgroundLoader.webp)', backgroundSize: "cover", opacity: percent >= 100 ? 0 : .4, transition: '1s opacity ease-in', pointerEvents: 'none' }}
+            style={{ backgroundImage: 'url(images/BackgroundLoader.webp)', backgroundSize: "cover", opacity: complete ? 0 : 1, transition: '1s opacity ease-in', pointerEvents: 'none' }}
         >
             <div className={styles.content} >
                 <div className={styles.logoContainer}>

@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { mountStoreDevtool } from 'simple-zustand-devtools'
 import { connectMain } from './setWorkerStore'
+import { createLoaders, loadModels } from '@/utils/Three'
 export const useStoreThree = create((set, get) => ({
     isWorker: false,
     initialized: false,
@@ -12,15 +13,14 @@ export const useStoreThree = create((set, get) => ({
         if (get().initialized)
             return
         connectMain(set, get, isWorker, getMain)
-        get().run('logMain', "hola")
+        get().Actions.initCanvas(threeParams)
     },
     Actions: {
         initCanvas(threeParams) {
 
-            //const loaders = createLoaders(threeParams.gl)
-            const loaders = ""
+            const loaders = createLoaders(threeParams.gl)
             set({ three: { threeParams, loaders } })
-            //get().Actions.preload()
+            get().Actions.preload()
         },
         log() {
 
@@ -38,11 +38,16 @@ export const useStoreThree = create((set, get) => ({
         }
         ,
         onProgressLoad(e) {
+
             get().run("onProgress", e)
         }
         ,
         onCompleteLoad(e) {
-            console.log("progress", e)
+            get().run("onComplete", 1)
+
+            set(({ model }) => ({ model: e.model.scene }))
+            console.log(get().model)
+
         },
     }
 

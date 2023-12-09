@@ -30,7 +30,7 @@ export function CanvasOffScreen({
 
       offscreen = canvasRef.current.transferControlToOffscreen()
 
-      throw new Error('Parameter is not a number!')
+
     } catch (e) {
       // Browser doesn't support offscreen canvas at all
       setFallback(true)

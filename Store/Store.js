@@ -38,9 +38,9 @@ export const useStore = create((set, get) => ({
         },
         async onComplete(e) {
             await sleep(1000)
-
+            console.log("complete store")
             set(({ loading }) => ({ loading: { ...loading, complete: true } }))
-            set(({ model }) => ({ model: e.model.scene }))
+
         },
 
 
